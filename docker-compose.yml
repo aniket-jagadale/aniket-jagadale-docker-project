@@ -1,0 +1,25 @@
+services:
+  web:
+    image: nginx
+    ports:
+     - "80:80"
+    volumes:
+     - ./web/code/:/usr/share/nginx/html/
+     - ./web/config/:/etc/nginx/conf.d/
+    depends_on:
+     - app
+     - db
+    restart: unless-stopped
+  app:
+    image: bitnami/php-fpm
+    volumes:
+     - ./app/code/:/app
+    depends_on:
+     - db
+    restart: unless-stopped
+  db:
+    build: ./db/
+    volumes:
+     - vol1:/var/lib/mysql/
+volumes:
+  vol1:
